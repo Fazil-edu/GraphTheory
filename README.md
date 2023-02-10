@@ -143,6 +143,73 @@ Für Logistikunternehmen ist es von großer Bedeutung, wenn man die Route zwisch
 
 Der Algorithmus von Dijkstra findet zwischen einen Startknoten *u* und allen anderen Knoten auf dem Graph den kürzesten Weg. Also, er löst das ***Single-source shortest path problem***.
 
+``` python
+def dijkstra(nodes, edges, source, destination):
+    
+    # Sets the distances that remain to be calculated from the source to each node to the largest floating point number (= "infinity").
+    distances = {v: float("inf") for v in nodes}
+
+    # For each node from nodes the predecessor is not known at the beginning, so initially with None.
+    previousNodes = {v: None for v in nodes}
+
+    # The distance from source to itself is 0.
+    distances[source] = 0
+    cnt=0
+    
+    print("At the end of the " + str(cnt) + ". loop the distances: ", distances)    
+    print("At the end of the " + str(cnt) + ". loop the previous nodes: ", previousNodes, "\n")
+    
+    # In nodes the elements(=nodes) are in until the smallest distance to it has been calculated(=updated with the smallest distance). 
+    while len(nodes) > 0:
+        cnt+=1
+        # It takes from the table already visited nodes and looks which node has the minimum distance. 
+        # This is of course also the shortest distance from source to this currentCalculatedNode .
+        currentCalculatedNode = min(nodes, key=lambda u: distances[u])
+        
+        nodes.remove(currentCalculatedNode)
+
+
+        # So that it also does not calculate the disntances to all other nodes, the algorithm is terminated at this point.
+        if(currentCalculatedNode == destination):
+            print("breaked by ", currentCalculatedNode)
+            break
+
+
+        # The neighbour nodes of are updated in the following.
+        for neighbour, costToCurrentCalculatedNode in getNeighbourNodes(edges,currentCalculatedNode):
+            """
+           In this step you have already calculated the shortest distance from the source to the currentCalculatedNode. 
+           This means that if you want to find a shorter distance from the source to the neighboring node of the currentCalculatedNode, 
+           you need to compare the distance calculated so far from the source to this neighboring node with the sum of the distance from the source to the     
+           currentCalculatedNode and the distance from the currentCalculatedNode to the neighboring node, and if the sum is smaller, 
+           then update the distance from the neighbor as well as from the predecessor  of this neighboring node to currentCalculatedNode.
+           """
+            routeCost = distances[currentCalculatedNode] + costToCurrentCalculatedNode
+            if routeCost < distances[neighbour]:
+                distances[neighbour] = routeCost
+                previousNodes[neighbour] = currentCalculatedNode
+                
+        print("At the end of the " + str(cnt) + ". loop the distances: ", distances)    
+        print("At the end of the " + str(cnt) + ". loop the previous nodes: ", previousNodes, "\n")
+
+
+    # specifyTheRoute does nothing but return the route from previousNodes to the destination node in an array in the correct predecessor order.    
+    return (specifyTheRoute(destination, previousNodes),distances[destination])
+    
+    def specifyTheRoute(destination, previousNodes):
+    
+    # It outputs the route as an array of predecessors, which are put into the correct predecessor order here.
+    route = []
+    currentNode = destination
+    while previousNodes[currentNode] is not None:
+        route.insert(0, currentNode)
+        currentNode = previousNodes[currentNode]
+    route.insert(0, currentNode)
+    return route
+    
+
+```
+
  Beispiele dazu von der Anwendung folgen.
 
 ## **6. [Algorithmus von Floyd-Warshall](https://de.wikipedia.org/wiki/Algorithmus_von_Floyd_und_Warshall)**
