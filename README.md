@@ -198,14 +198,14 @@ def dijkstra(nodes, edges, source, destination):
     
     def specifyTheRoute(destination, previousNodes):
     
-    # It outputs the route as an array of predecessors, which are put into the correct predecessor order here.
-    route = []
-    currentNode = destination
-    while previousNodes[currentNode] is not None:
-        route.insert(0, currentNode)
-        currentNode = previousNodes[currentNode]
-    route.insert(0, currentNode)
-    return route
+      # It outputs the route as an array of predecessors, which are put into the correct predecessor order here.
+      route = []
+      currentNode = destination
+      while previousNodes[currentNode] is not None:
+          route.insert(0, currentNode)
+          currentNode = previousNodes[currentNode]
+      route.insert(0, currentNode)
+      return route
     
 
 ```
